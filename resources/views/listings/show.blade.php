@@ -49,9 +49,10 @@
           </div>
       </x-card>
 
-
    {{-- Conditionally display edit and delete options --}}
-   @if(auth()->id() === $listing->user_id || auth()->user()->isAdmin())
+   @if(auth()->check() && auth()->user() && (auth()->id() === $listing->user_id || auth()->user()->isAdmin()))
+ 
+   {{-- Admin/User controls --}}
     <!-- Show admin controls like delete any listing, edit any listing, etc. -->
    <x-card class="mt-4 p-2 flex space-x-6">
        <a href="/listings/{{ $listing->id }}/edit">
@@ -63,6 +64,7 @@
            @method('DELETE')
            <button class="text-red-500"><i class="fa-solid fa-trash"></i> Delete</button>
        </form>
+   
    </x-card>
 @endif
 

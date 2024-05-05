@@ -26,7 +26,7 @@
         var message = document.getElementById('message').value;
         var fullMessage = encodeURIComponent("Hello, my name is " + name + ". I am interested in becoming a dealer. Here is my message: " + message);
     
-        var whatsappUrl = `https://wa.me/0032491280944?text=${fullMessage}`;
+        var whatsappUrl = `https://wa.me/+32491280944?text=${fullMessage}`;
         window.open(whatsappUrl, '_blank');
     }
     </script>

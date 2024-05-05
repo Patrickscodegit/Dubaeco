@@ -59,7 +59,8 @@ class ListingController extends Controller
 
     // Show Edit Form
     public function edit(Listing $listing) {
-        if (auth()->id() !== $listing->user_id) {
+        if (auth()->id() !== $listing->user_id && !auth()->user()->isAdmin())
+        {
             abort(403, 'Unauthorized action.');
         }
         return view('listings.edit', ['listing' => $listing]);
@@ -67,7 +68,7 @@ class ListingController extends Controller
     
 
     public function update(Request $request, Listing $listing) {
-        if (auth()->id() !== $listing->user_id) {
+        if (auth()->id() !== $listing->user_id && !auth()->user()->isAdmin()) {
             abort(403, 'Unauthorized action.');
         }
     
@@ -114,7 +115,7 @@ class ListingController extends Controller
 // Delete Listing
 public function destroy(Listing $listing) {
     // Manually check if the current authenticated user is the owner of the listing
-    if (auth()->id() !== $listing->user_id) {
+    if (auth()->id() !== $listing->user_id && !auth()->user()->isAdmin()) {
         abort(403, 'Unauthorized action.');
     }
 
@@ -135,12 +136,24 @@ public function destroy(Listing $listing) {
 }
 
 
-    // Manage Listings
-    public function manage() {
-        return view('listings.manage', [
-            'listings' => Listing::where('user_id', auth()->id())->latest()->paginate(4)
-        ]);
+  // Manage Listings
+public function manage()
+{
+    // Initially, assume the user is only allowed to see their own listings
+    $query = Listing::where('user_id', auth()->id());
+
+    // If the user is an admin, they should be able to see all listings
+    if (auth()->check() && auth()->user()->isAdmin()) {
+        $query = Listing::query(); // This changes the query to fetch all listings
     }
+
+    $listings = $query->latest()->paginate(4);
+
+    return view('listings.manage', [
+        'listings' => $listings
+    ]);
+}
+
 
     // Handle image uploads
     private function handleImages(Request $request, Listing $listing, $cleanup = false) {

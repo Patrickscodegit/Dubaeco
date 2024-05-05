@@ -28,6 +28,14 @@
           </td>
         </tr>
         @endforeach
+
+        <!-- Pagination Links -->
+        <tr>
+          <td colspan="3" class="text-center py-8">
+              {{ $listings->links() }}  <!-- This line adds pagination links -->
+          </td>
+        </tr>
+
         @else
         <tr class="border-gray-300">
           <td class="px-4 py-8 border-t border-b border-gray-300 text-lg">

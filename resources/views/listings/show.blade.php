@@ -51,7 +51,8 @@
 
 
    {{-- Conditionally display edit and delete options --}}
-   @if(auth()->id() === $listing->user_id)
+   @if(auth()->id() === $listing->user_id || auth()->user()->isAdmin())
+    <!-- Show admin controls like delete any listing, edit any listing, etc. -->
    <x-card class="mt-4 p-2 flex space-x-6">
        <a href="/listings/{{ $listing->id }}/edit">
            <i class="fa-solid fa-pencil"></i> Edit

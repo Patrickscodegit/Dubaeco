@@ -21,7 +21,31 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    // Optionally add methods to check user roles
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
+
+       /**
+     * Check if the user has a specific role.
+     *
+     * @param  string $role
+     * @return bool
+     */
+    
+    public function hasRole($role)
+    {
+        return strtolower($this->role) === strtolower($role);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +65,9 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 
 // Log In User
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+
+// dealer
+// Define a route for the 'Become a Dealer' page
+Route::get('/dealer', function () {
+    return view('dealer');  // This will render the dealer.blade.php file when /dealer is accessed
+})->name('dealer');  // This names the route 'dealer' for easy reference

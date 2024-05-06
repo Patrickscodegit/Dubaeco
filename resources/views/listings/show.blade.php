@@ -21,7 +21,7 @@
                     <!-- Description section, centrally aligned with text left-aligned -->
                     <div class="w-1/3 text-center print:w-full">
                         <h3 class="text-3xl font-bold mb-4 print:text-4xl">Car Description</h3>
-                        <div class="text-lg space-y-6 whitespace-pre-wrap text-left print:text-xl print:whitespace-normal">
+                        <div class="text-lg space-y-6 whitespace-pre-wrap text-left print:text-xl print:whitespace-pre-wrap">
                             {{ $listing->description }}
                         </div>
                     </div>
@@ -55,8 +55,9 @@
                             @foreach($listing->images as $image)
                                 <img src="{{ asset('storage/' . $image->image_path) }}"
                                      alt="Gallery Image"
-                                     class="rounded-lg shadow-lg cursor-pointer transition duration-200 ease-in transform hover:scale-105 print:max-w-full print:h-auto"
-                                     onclick="openModal(this.src)">
+                                     class="rounded-lg shadow-lg cursor-pointer transition duration-200 ease-in transform hover:scale-105 print:w-full print:h-auto print:object-cover"
+                                     onclick="openModal(this.src)"
+                                     style="max-height: 300px;"> <!-- Set max-height for non-printing -->
                             @endforeach
                         </div>
                     </div>

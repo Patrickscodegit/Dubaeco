@@ -39,7 +39,7 @@ class ListingController extends Controller
             'website' => 'required|url',
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
-            'description' => 'required|string'
+            'description' => 'required|string|max:65535',
         ]);
 
         // Handle logo upload
@@ -94,7 +94,7 @@ class ListingController extends Controller
             'website' => 'required|url',
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:65535',
             'logo' => 'nullable|image',
         ]);
 

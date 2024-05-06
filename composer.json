@@ -6,11 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2 || ^8.3",
-        "guzzlehttp/guzzle": "^7.4",  
-        "itsgoingd/clockwork": "^5.1", 
-        "laravel/framework": "^9.23",  
-        "laravel/sanctum": "^2.14.1", 
-        "laravel/tinker": "^2.7"  
+        "guzzlehttp/guzzle": "^7.4",
+        "intervention/image": "^2",
+        "itsgoingd/clockwork": "^5.1",
+        "laravel/framework": "^9.23",
+        "laravel/sanctum": "^2.14.1",
+        "laravel/tinker": "^2.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",  

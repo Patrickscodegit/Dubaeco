@@ -7,6 +7,7 @@ use App\Models\ListingImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\Facades\Image;
 
 class ListingController extends Controller
 {
@@ -33,7 +34,7 @@ class ListingController extends Controller
     public function store(Request $request) {
         $formFields = $request->validate([
             'title' => 'required|string|max:255',
-            'company' => ['required', 'string', 'max:255', Rule::unique('listings', 'company')],
+            'company' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'website' => 'required|url',
             'email' => ['required', 'email'],
@@ -43,7 +44,20 @@ class ListingController extends Controller
 
         // Handle logo upload
         if ($request->hasFile('logo')) {
-            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+            // Resize and format the logo
+            $logoPath = $request->file('logo')->store('logos', 'public');
+            $img = Image::make(storage_path('app/public/' . $logoPath));
+            // Resize logo to fit within 300x300 pixels
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            // Convert logo to JPG format with 80% quality
+            $img->encode('jpg', 80);
+            // Save the resized and formatted logo
+            $img->save();
+
+            $formFields['logo'] = $logoPath;
         }
 
         // Add authenticated user ID to form fields
@@ -67,11 +81,12 @@ class ListingController extends Controller
     }
     
 
+    // Update Listing Data
     public function update(Request $request, Listing $listing) {
         if (auth()->id() !== $listing->user_id && !auth()->user()->isAdmin()) {
             abort(403, 'Unauthorized action.');
         }
-    
+
         $formFields = $request->validate([
             'title' => 'required|string|max:255',
             'company' => ['required', 'string', 'max:255'],
@@ -82,35 +97,34 @@ class ListingController extends Controller
             'description' => 'required|string',
             'logo' => 'nullable|image|max:5000',
         ]);
-    
+
         if ($request->hasFile('logo')) {
+            // Resize and format the logo
+            $logoPath = $request->file('logo')->store('logos', 'public');
+            $img = Image::make(storage_path('app/public/' . $logoPath));
+            // Resize logo to fit within 300x300 pixels
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            // Convert logo to JPG format with 80% quality
+            $img->encode('jpg', 5);
+            // Save the resized and formatted logo
+            $img->save();
+
             if ($listing->logo && Storage::disk('public')->exists($listing->logo)) {
                 Storage::disk('public')->delete($listing->logo);
             }
-            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+            $formFields['logo'] = $logoPath;
         }
-    
+
         $listing->update($formFields);
-    
-        if ($request->hasFile('images')) {
-            // Optionally delete old images
-            foreach ($listing->images as $image) {
-                Storage::disk('public')->delete($image->image_path);
-                $image->delete();
-            }
-            // Add new images
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('listing_images', 'public');
-                ListingImage::create([
-                    'listing_id' => $listing->id,
-                    'image_path' => $path
-                ]);
-            }
-    
+
+        // Handle multiple image uploads
+        $this->handleImages($request, $listing, true);
+
         return back()->with('message', 'Listing updated successfully!');
     }
-}
-    
 
 // Delete Listing
 public function destroy(Listing $listing) {
@@ -164,12 +178,26 @@ public function manage()
                     $image->delete();
                 }
             }
+
             foreach ($request->file('images') as $image) {
-                $path = $image->store('listing_images', 'public');
+                // Resize and format the image
+                $imagePath = $image->store('listing_images', 'public');
+                $img = Image::make(storage_path('app/public/' . $imagePath));
+                // Resize image to fit within 800x800 pixels
+                $img->resize(800, 800, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                // Convert image to JPG format with 80% quality
+                $img->encode('jpg', 5);
+                // Save the resized and formatted image
+                $img->save();
+
                 ListingImage::create([
                     'listing_id' => $listing->id,
-                    'image_path' => $path
+                    'image_path' => $imagePath
                 ]);
+
             }
         }
     }

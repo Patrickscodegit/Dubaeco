@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('listing_images')) {
         Schema::create('listing_images', function (Blueprint $table) {
             $table->id();  // Creates an auto-incrementing primary key column named 'id'.
             $table->foreignId('listing_id') // Creates an unsigned bigint column for storing listing IDs.
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->timestamps();  // Creates 'created_at' and 'updated_at' columns.
         });
     }
+}
 
     /**
      * Reverse the migrations.

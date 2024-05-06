@@ -95,7 +95,7 @@ class ListingController extends Controller
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
             'description' => 'required|string',
-            'logo' => 'nullable|image|max:5000',
+            'logo' => 'nullable|image',
         ]);
 
         if ($request->hasFile('logo')) {

@@ -16,7 +16,7 @@
                 <div class="border border-gray-200 w-full mb-6"></div>
 
                 <div class="flex flex-col items-center">
-                    <div class="w-1/3 text-center">
+                    <div class="w-3/5 text-center">
                         <h3 class="text-3xl font-bold mb-4">Car Description</h3>
                         <div class="text-lg space-y-6 whitespace-pre-wrap text-left">
                             {{ $listing->description }}

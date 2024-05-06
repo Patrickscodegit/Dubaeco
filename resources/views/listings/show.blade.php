@@ -39,6 +39,11 @@
                     </div>
                 </div>
 
+                  <!-- WhatsApp Contact Button -->
+                  <button onclick="contactViaWhatsApp();" class="bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600 mt-4">
+                    Contact via WhatsApp
+                </button>
+
                 {{-- Image gallery --}}
                
                     @if($listing->images->count() > 0)
@@ -65,10 +70,7 @@
                 </div>
 
 
-                 <!-- WhatsApp Contact Button -->
-                 <button onclick="contactViaWhatsApp();" class="bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600 mt-4">
-                    Contact via WhatsApp
-                </button>
+               
             </div>
 
                 {{-- Admin controls --}}

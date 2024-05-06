@@ -64,6 +64,13 @@
                     <span class="absolute top-4 right-4 text-white text-3xl cursor-pointer" onclick="closeModal()">&times;</span>
                 </div>
 
+
+                 <!-- WhatsApp Contact Button -->
+                 <button onclick="contactViaWhatsApp();" class="bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600 mt-4">
+                    Contact via WhatsApp
+                </button>
+            </div>
+
                 {{-- Admin controls --}}
                 @auth
                   @if (auth()->user()->isAdmin())
@@ -96,4 +103,25 @@
             modal.classList.add('hidden');
         }
     </script>
+
+<script>
+    function contactViaWhatsApp() {
+        var pageUrl = encodeURIComponent(window.location.href);
+        var message = "I'm interested in your listing for the car shown on the website. Here's the link to the listing: " + pageUrl;
+        var whatsappUrl = `https://wa.me/+32491280944?text=${message}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    function openModal(src) {
+        var modal = document.getElementById('imageModal');
+        var modalImg = document.getElementById('modalImage');
+        modal.classList.remove('hidden');
+        modalImg.src = src;
+    }
+
+    function closeModal() {
+        var modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+    }
+</script>
 </x-layout>

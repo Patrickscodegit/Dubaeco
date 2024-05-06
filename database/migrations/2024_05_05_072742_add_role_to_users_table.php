@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('user'); // Default role is 'user'
+        if (!Schema::hasTable('users')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('role')->default('user'); // Default role is 'user'
             });
+        }
     }
 
     /**

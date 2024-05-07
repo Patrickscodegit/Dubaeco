@@ -40,6 +40,7 @@ class ListingController extends Controller
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
             'description' => 'required|string|max:65535',
+            'price' => 'required|string|max:65535',
         ]);
 
         // Handle logo upload
@@ -96,6 +97,7 @@ class ListingController extends Controller
             'tags' => 'required|string|max:255',
             'description' => 'required|string|max:65535',
             'logo' => 'nullable|image',
+            'price' => 'required|string|max:65535',
         ]);
 
         if ($request->hasFile('logo')) {

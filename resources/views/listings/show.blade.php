@@ -8,6 +8,18 @@
                      alt="Company Logo"
                      onclick="openModal(this.src)"/>
 
+
+                     <div class="flex flex-col items-center print:hidden">
+                        <!-- Description section, centrally aligned with text left-aligned -->
+                        <div class="w-4/5 text-center">
+                            <h3 class="text-3xl font-bold mb-4">Price</h3>
+                            <div class="text-lg space-y-6 whitespace-pre-wrap text-center">
+                                {{ $listing->price }}
+                            </div>
+                        </div>
+                    </div>
+                    
+
                 <h3 class="text-2xl mb-2 print:text-3xl">{{ $listing->title }}</h3>
                 <div class="text-lg my-4 print:hidden">
                     <i class="fa-solid fa-location-dot"></i> {{ $listing->location }}

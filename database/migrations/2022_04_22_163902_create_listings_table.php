@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('email');
             $table->string('website');
-            $table->nvarchar('description');
+            $table->varchar(5000)('description');
             $table->timestamps();
         });
     }

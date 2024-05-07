@@ -7,6 +7,17 @@
 
       <form method="POST" action="/listings" enctype="multipart/form-data">
           @csrf
+
+          <div class="mb-6">
+            <label for="price" class="inline-block text-lg mb-2">
+              Price
+            </label>
+            <textarea class="border border-gray-200 rounded p-2 w-full" name="price" rows="250" placeholder="price">{{ old('price') }}</textarea>
+            @error('price')
+            <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+            @enderror
+          </div>
+
           <div class="mb-6">
               <label for="company" class="inline-block text-lg mb-2">Company Name</label>
               <input type="text" class="border border-gray-200 rounded p-2 w-full" name="company" value="{{ old('company') }}" />

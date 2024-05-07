@@ -11,7 +11,7 @@
 
                      <div class="flex flex-col items-center print:hidden">
                         <!-- Description section, centrally aligned with text left-aligned -->
-                        <div class="w-4/5 text-center">
+                        <div class="w-full text-center">
                             <h3 class="text-3xl font-bold mb-4">Price</h3>
                             <div class="text-lg space-y-6 whitespace-pre-wrap text-center">
                                 {{ $listing->price }}
@@ -31,7 +31,7 @@
 
                 <div class="flex flex-col items-center print:block">
                     <!-- Description section, centrally aligned with text left-aligned -->
-                    <div class="w-1/3 text-center print:w-full">
+                    <div class="w-full text-center print:w-full">
                         <h3 class="text-3xl font-bold mb-4 print:text-4xl">Car Description</h3>
                         <div class="text-lg space-y-6 whitespace-pre-wrap text-left print:text-xl print:whitespace-pre-wrap">
                             {{ $listing->description }}

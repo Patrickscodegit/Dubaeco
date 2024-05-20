@@ -39,8 +39,8 @@ class ListingController extends Controller
             'website' => 'required|url',
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
-            'price' => 'required|string|max:65535',
+            'description' => 'required|string|max:5000',
+            'price' => 'required|string|max:5000',
         ]);
 
         // Handle logo upload
@@ -95,9 +95,9 @@ class ListingController extends Controller
             'website' => 'required|url',
             'email' => ['required', 'email'],
             'tags' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
+            'description' => 'required|string|max:5000',
             'logo' => 'nullable|image',
-            'price' => 'required|string|max:65535',
+            'price' => 'required|string|max:5000',
         ]);
 
         if ($request->hasFile('logo')) {

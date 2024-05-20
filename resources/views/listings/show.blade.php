@@ -9,15 +9,9 @@
                      onclick="openModal(this.src)"/>
 
 
-                     <div class="flex flex-col items-center print:hidden">
-                        <!-- Description section, centrally aligned with text left-aligned -->
-                        <div class="w-full text-center">
-                            <h3 class="text-3xl font-bold mb-4">Price</h3>
-                            <div class="text-lg space-y-6 whitespace-pre-wrap text-center">
-                                {{ $listing->price }}
-                            </div>
-                        </div>
-                    </div>
+                     
+                    
+        
                     
 
                 <h3 class="text-2xl mb-2 print:text-3xl">{{ $listing->title }}</h3>
@@ -25,9 +19,6 @@
                     <i class="fa-solid fa-location-dot"></i> {{ $listing->location }}
                 </div>
                 <div class="border border-gray-200 w-full mb-6 print:hidden"></div>
-
-                <button onclick="window.print();" class="bg-red-500 text-white rounded-xl py-2 px-4 hover:bg-red-600 mt-2 mb-4 mx-auto print:hidden">Print this page</button>
-
 
                 <div class="flex flex-col items-center print:block">
                     <!-- Description section, centrally aligned with text left-aligned -->
@@ -37,6 +28,21 @@
                             {{ $listing->description }}
                         </div>
                     </div>
+
+                
+
+            
+
+                    <div class="flex flex-col items-center print:hidden">
+                        <!-- Description section, centrally aligned with text left-aligned -->
+                        <div class="w-full text-center">
+                            <h3 class="text-3xl font-bold mb-4">Price</h3>
+                            <div class="text-lg space-y-6 whitespace-pre-wrap text-center">
+                                {{ $listing->price }}
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="window.print();" class="bg-red-500 text-white rounded-xl py-2 px-4 hover:bg-red-600 w-full mt-2 mb-4 mx-auto print:hidden">Print this page</button>
 
                     <!-- Contact information and website link, full width -->
                     @auth
@@ -123,4 +129,17 @@
             window.open(whatsappUrl, '_blank');
         }
     </script>
+
+<script>
+    function adjustTextareaHeight() {
+        const textarea = document.getElementById('feeTextarea');
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    // Adjust the height when the document loads
+    window.onload = function() {
+        adjustTextareaHeight();
+    };
+</script>
 </x-layout>

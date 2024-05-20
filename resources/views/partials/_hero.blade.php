@@ -7,7 +7,7 @@
       Luxury<span class="text-black">Cars</span>
     </h1>
     <p class="text-2xl text-gray-200 font-bold my-4">
-      Explore our listings
+      Dubaeco.ae
     </p>
     <div>
       @auth

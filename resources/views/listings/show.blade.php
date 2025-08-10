@@ -67,19 +67,19 @@
                 @if($listing->images->count() > 0)
                     <div class="mt-6 print:mt-0">
                         <h3 class="text-2xl font-bold mb-4 print:text-3xl">Gallery</h3>
-                        <div class="gallery-viewer relative w-full max-w-3xl mx-auto mb-6">
+                        <div class="gallery-viewer relative w-full max-w-4xl mx-auto mb-6">
                             <div class="gallery-container overflow-hidden rounded-lg shadow-lg bg-gray-100">
-                                <div class="gallery-track flex transition-transform duration-300" data-current="0">
-                                    @foreach($listing->images as $index => $image)
-                                        <div class="gallery-slide w-full flex-shrink-0">
-                                            <div class="relative pt-[56.25%]">
+                                <div class="h-[400px] md:h-[500px] lg:h-[600px]"> <!-- Fixed height container -->
+                                    <div class="gallery-track flex h-full transition-transform duration-300" data-current="0">
+                                        @foreach($listing->images as $index => $image)
+                                            <div class="gallery-slide w-full flex-shrink-0 h-full flex items-center justify-center">
                                                 <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                                     class="absolute inset-0 w-full h-full object-contain p-2 cursor-pointer"
+                                                     class="max-w-full max-h-full object-contain cursor-pointer p-4"
                                                      alt="Gallery image {{ $index + 1 }}"
                                                      onclick="openModal(this.src)">
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
 
@@ -116,6 +116,10 @@
                 @endif
 
                 <style>
+                    .gallery-container {
+                        background: #f8f8f8;
+                    }
+                    
                     .gallery-track {
                         display: flex;
                         transition: transform 0.3s ease-in-out;
@@ -126,8 +130,22 @@
                         flex-shrink: 0;
                     }
 
+                    .gallery-dot {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background-color: rgba(255, 255, 255, 0.5);
+                        transition: background-color 0.3s ease;
+                    }
+
                     .gallery-dot.active {
                         background-color: white;
+                        transform: scale(1.2);
+                    }
+
+                    /* Navigation button hover effects */
+                    .gallery-prev:hover, .gallery-next:hover {
+                        background-color: rgba(0, 0, 0, 0.75);
                     }
                 </style>
 
@@ -164,7 +182,9 @@
 
                     function moveSlide(direction) {
                         const track = document.querySelector('.gallery-track');
-                        const current = parseInt(track.dataset.current);
+                        if (!track) return;
+                        
+                        const current = parseInt(track.dataset.current || 0);
                         const slides = track.children.length;
                         let next = (current + direction) % slides;
                         
@@ -174,9 +194,20 @@
 
                     function goToSlide(index) {
                         const track = document.querySelector('.gallery-track');
+                        if (!track) return;
+
+                        // Ensure smooth transition
+                        track.style.transition = 'transform 0.3s ease-in-out';
                         track.style.transform = `translateX(-${index * 100}%)`;
                         track.dataset.current = index;
+                        
+                        // Update navigation state
                         updateDots(index);
+                        
+                        // Handle edge cases
+                        setTimeout(() => {
+                            track.style.transition = '';
+                        }, 300);
                     }
 
                     function updateDots(activeIndex) {

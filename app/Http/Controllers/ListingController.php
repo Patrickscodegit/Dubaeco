@@ -14,13 +14,7 @@ class ListingController extends Controller
     // Show all listings
     public function index() {
         return view('listings.index', [
-            'listings' => Listing::latest()
-                ->filter(request(['tag', 'search']))
-                ->whereNotNull('title')
-                ->where('title', '!=', '')
-                ->whereNotNull('company')
-                ->where('company', '!=', '')
-                ->paginate(6)
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(6)
         ]);
     }
 

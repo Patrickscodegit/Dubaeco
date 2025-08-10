@@ -11,7 +11,9 @@
     @unless(count($listings) == 0)
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         @foreach($listings as $listing)
-          <x-listing-card :listing="$listing" />
+          <div class="w-full">
+            <x-listing-card :listing="$listing" />
+          </div>
         @endforeach
       </div>
     @else

@@ -17,12 +17,12 @@
 
 <a href="/listings/{{$listing->id}}" class="block hover:shadow-lg transition-shadow duration-200">
   <x-card>
-    <div class="flex">
-      <img class="w-32 md:w-48 mr-6 object-cover rounded-lg"
+    <div class="flex h-full">
+      <img class="w-32 md:w-48 mr-6 object-cover rounded-lg flex-shrink-0"
         src="{{$listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png')}}" 
         alt="{{$listing->title}}" />
-      <div class="flex-1">
-        <h3 class="text-2xl hover:text-laravel font-bold">{{$listing->title}}</h3>
+      <div class="flex-1 flex flex-col justify-center">
+        <h3 class="text-2xl hover:text-laravel font-bold mb-2">{{$listing->title}}</h3>
         <div class="text-xl font-bold mb-4 text-gray-600">{{$listing->company}}</div>
         @if($listing->tags)
           <x-listing-tags :tagsCsv="$listing->tags" />

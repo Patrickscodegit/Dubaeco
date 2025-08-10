@@ -9,8 +9,7 @@ class Listing extends Model
 {
     use HasFactory;
 
-    // Uncomment and update this if you need to allow mass assignment
-    // protected $fillable = ['title', 'company', 'location', 'website', 'email', 'description', 'tags', 'user_id'];
+    protected $fillable = ['title', 'company', 'location', 'website', 'email', 'description', 'tags', 'user_id', 'logo', 'price'];
 
     /**
      * Define a scope to filter listings based on search criteria.

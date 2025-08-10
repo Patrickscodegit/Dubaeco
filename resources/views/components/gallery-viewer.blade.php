@@ -1,14 +1,16 @@
 @props(['images'])
 
 <div class="gallery-viewer relative w-full max-w-3xl mx-auto mb-6">
-    <div class="gallery-container overflow-hidden rounded-lg shadow-lg">
+    <div class="gallery-container overflow-hidden rounded-lg shadow-lg bg-gray-100">
         <div class="gallery-track flex transition-transform duration-300" data-current="0">
             @foreach($images as $index => $image)
                 <div class="gallery-slide w-full flex-shrink-0">
-                    <img src="{{ $image->image_url }}" 
-                         class="w-full h-full object-cover cursor-pointer"
-                         alt="Gallery image {{ $index + 1 }}"
-                         onclick="openModal(this.src)">
+                    <div class="relative pt-[56.25%]"> <!-- 16:9 aspect ratio container -->
+                        <img src="{{ $image->image_url }}" 
+                             class="absolute inset-0 w-full h-full object-contain p-2 cursor-pointer"
+                             alt="Gallery image {{ $index + 1 }}"
+                             onclick="openModal(this.src)">
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -43,7 +45,6 @@
 <style>
     .gallery-container {
         overflow: hidden;
-        aspect-ratio: 16/9;
     }
     
     .gallery-track {
@@ -55,6 +56,16 @@
         width: 100%;
         flex-shrink: 0;
     }
+
+    /* Add loading animation */
+    .gallery-slide img {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .gallery-slide img.loaded {
+        opacity: 1;
+    }
     
     .gallery-dot.active {
         background-color: white;
@@ -64,7 +75,19 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         initGallery();
+        initImageLoading();
     });
+
+    function initImageLoading() {
+        document.querySelectorAll('.gallery-slide img').forEach(img => {
+            if (img.complete) {
+                img.classList.add('loaded');
+            } else {
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                });
+            }
+        });
 
     function initGallery() {
         updateDots(0);

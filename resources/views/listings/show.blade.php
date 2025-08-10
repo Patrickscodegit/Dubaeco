@@ -3,10 +3,14 @@
         <x-card class="p-10 print:p-0 print:border-0">
             <div class="flex flex-col items-center justify-center text-center">
                 <!-- Main Image -->
-                <img class="w-full max-w-3xl mx-auto mb-6 cursor-pointer object-cover rounded-lg shadow-lg"
-                     src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
-                     alt="Main Car Image"
-                     onclick="openModal(this.src)"/>
+                <div class="w-full max-w-3xl mx-auto mb-6 bg-gray-100 rounded-lg shadow-lg overflow-hidden">
+                    <div class="relative pt-[56.25%]">
+                        <img class="absolute inset-0 w-full h-full cursor-pointer object-contain p-2"
+                             src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
+                             alt="Main Car Image"
+                             onclick="openModal(this.src)"/>
+                    </div>
+                </div>
 
                 <h3 class="text-2xl mb-2 print:text-3xl">{{ $listing->title }}</h3>
                 <div class="text-lg my-4 print:hidden">
@@ -88,9 +92,16 @@
     </div>
 
     <!-- Modal for displaying enlarged image -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden">
-        <img id="modalImage" class="max-w-full max-h-full">
-        <span class="absolute top-4 right-4 text-white text-3xl cursor-pointer" onclick="closeModal()">&times;</span>
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 hidden z-50">
+        <div class="relative max-w-7xl w-full h-full flex items-center justify-center">
+            <img id="modalImage" class="max-w-full max-h-[90vh] object-contain">
+            <button class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 focus:outline-none" 
+                    onclick="closeModal()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
     </div>
 
     <!-- Alpine.js initialization -->

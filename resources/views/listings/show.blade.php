@@ -59,15 +59,31 @@
                     Contact via WhatsApp
                 </button>
 
-                <!-- Gallery Carousel -->
+                <!-- Gallery Section -->
                 @if($listing->images->count() > 0)
                     <div class="mt-6 print:mt-0">
                         <h3 class="text-2xl font-bold mb-4 print:text-3xl">Gallery</h3>
-                        <div x-data="imageCarousel([
-                            @foreach($listing->images as $image)
-                                '{{ asset('storage/' . $image->image_path) }}',
-                            @endforeach
-                        ])" 
+                        
+                        <!-- Debug info -->
+                        @php
+                            $imageUrls = [];
+                            foreach($listing->images as $image) {
+                                $imageUrls[] = asset('storage/' . $image->image_path);
+                            }
+                        @endphp
+
+                        <div x-data="{
+                            images: {{ json_encode($imageUrls) }},
+                            currentIndex: 0,
+                            next() {
+                                this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                            },
+                            prev() {
+                                this.currentIndex = this.currentIndex === 0 
+                                    ? this.images.length - 1 
+                                    : this.currentIndex - 1;
+                            }
+                        }" 
                         class="relative w-full max-w-3xl mx-auto">
                             <div class="overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9">
                                 <template x-for="(image, index) in images" :key="index">

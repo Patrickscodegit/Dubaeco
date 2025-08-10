@@ -110,7 +110,7 @@ class ListingController extends Controller
                 $constraint->upsize();
             });
             // Convert logo to JPG format with 80% quality
-            $img->encode('jpg', 5);
+            $img->encode('jpg', 80);
             // Save the resized and formatted logo
             $img->save();
 
@@ -191,7 +191,7 @@ public function manage()
                     $constraint->upsize();
                 });
                 // Convert image to JPG format with 80% quality
-                $img->encode('jpg', 5);
+                $img->encode('jpg', 80);
                 // Save the resized and formatted image
                 $img->save();
 

@@ -63,62 +63,7 @@
                 @if($listing->images->count() > 0)
                     <div class="mt-6 print:mt-0">
                         <h3 class="text-2xl font-bold mb-4 print:text-3xl">Gallery</h3>
-                        
-                        <!-- Debug info -->
-                        @php
-                            $imageUrls = [];
-                            foreach($listing->images as $image) {
-                                $imageUrls[] = asset('storage/' . $image->image_path);
-                            }
-                        @endphp
-
-                        <div x-data="{
-                            images: {{ json_encode($imageUrls) }},
-                            currentIndex: 0,
-                            next() {
-                                this.currentIndex = (this.currentIndex + 1) % this.images.length;
-                            },
-                            prev() {
-                                this.currentIndex = this.currentIndex === 0 
-                                    ? this.images.length - 1 
-                                    : this.currentIndex - 1;
-                            }
-                        }" 
-                        class="relative w-full max-w-3xl mx-auto">
-                            <div class="overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9">
-                                <template x-for="(image, index) in images" :key="index">
-                                    <img :src="image" 
-                                         :class="{'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index}"
-                                         class="absolute w-full h-full object-cover transition-opacity duration-500 cursor-pointer"
-                                         @click="openModal(image)"
-                                         alt="Gallery image">
-                                </template>
-                            </div>
-                            
-                            <!-- Navigation Buttons -->
-                            <button @click="prev()" 
-                                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-r-lg hover:bg-black/75">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </button>
-                            <button @click="next()" 
-                                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-l-lg hover:bg-black/75">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                            
-                            <!-- Indicators -->
-                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                                <template x-for="(image, index) in images" :key="index">
-                                    <button @click="currentIndex = index" 
-                                            :class="{'bg-white': currentIndex === index, 'bg-white/50': currentIndex !== index}"
-                                            class="w-2 h-2 rounded-full transition-colors duration-200">
-                                    </button>
-                                </template>
-                            </div>
-                        </div>
+                        <x-gallery-viewer :images="$listing->images" />
                     </div>
                 @else
                     <p class="mt-6 text-gray-500 print:hidden">No additional images provided.</p>

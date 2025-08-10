@@ -2,17 +2,46 @@
     <div class="mx-4">
         <x-card class="p-10 print:p-0 print:border-0">
             <div class="flex flex-col items-center justify-center text-center">
-                <!-- Logo and modal opening functionality -->
-                <img class="w-full max-w-md mx-auto md:w-96 mb-6 cursor-pointer print:max-w-full object-cover rounded-lg shadow-lg"
-                     src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
-                     alt="Company Logo"
-                     onclick="openModal(this.src)"/>
-
-
-                     
+                <!-- Image Carousel -->
+                <div x-data="imageCarousel([
+                    '{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}',
+                    @foreach($listing->images as $image)
+                        '{{ asset('storage/' . $image->image_path) }}',
+                    @endforeach
+                ])" 
+                class="relative w-full max-w-3xl mx-auto mb-6">
+                    <div class="overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9">
+                        <template x-for="(image, index) in images" :key="index">
+                            <img :src="image" 
+                                 :class="{'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index}"
+                                 class="absolute w-full h-full object-cover transition-opacity duration-500 cursor-pointer"
+                                 @click="openModal(image)"
+                                 alt="Car image">
+                        </template>
+                    </div>
                     
-        
+                    <!-- Navigation Buttons -->
+                    <button @click="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-r-lg hover:bg-black/75">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button @click="next()" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-l-lg hover:bg-black/75">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
                     
+                    <!-- Indicators -->
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        <template x-for="(image, index) in images" :key="index">
+                            <button @click="currentIndex = index" 
+                                    :class="{'bg-white': currentIndex === index, 'bg-white/50': currentIndex !== index}"
+                                    class="w-2 h-2 rounded-full transition-colors duration-200">
+                            </button>
+                        </template>
+                    </div>
+                </div>
 
                 <h3 class="text-2xl mb-2 print:text-3xl">{{ $listing->title }}</h3>
                 <div class="text-lg my-4 print:hidden">
@@ -108,7 +137,24 @@
         <span class="absolute top-4 right-4 text-white text-3xl cursor-pointer" onclick="closeModal()">&times;</span>
     </div>
 
+    <!-- Alpine.js initialization -->
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
+        function imageCarousel(images) {
+            return {
+                images: images,
+                currentIndex: 0,
+                next() {
+                    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                },
+                prev() {
+                    this.currentIndex = this.currentIndex === 0 
+                        ? this.images.length - 1 
+                        : this.currentIndex - 1;
+                }
+            }
+        }
+
         function openModal(src) {
             var modal = document.getElementById('imageModal');
             var modalImg = document.getElementById('modalImage');
@@ -120,15 +166,21 @@
             var modal = document.getElementById('imageModal');
             modal.classList.add('hidden');
         }
-    </script>
 
-    <script>
         function contactViaWhatsApp() {
             var pageUrl = encodeURIComponent(window.location.href);
             var message = "I'm interested in your listing for the car shown on the website. Here's the link to the listing: " + pageUrl;
             var whatsappUrl = `https://wa.me/+32491280944?text=${message}`;
             window.open(whatsappUrl, '_blank');
         }
+
+        // Auto-advance carousel every 5 seconds
+        setInterval(() => {
+            const carousel = document.querySelector('[x-data="imageCarousel"]')?.__x.$data;
+            if (carousel) {
+                carousel.next();
+            }
+        }, 5000);
     </script>
 
 <script>

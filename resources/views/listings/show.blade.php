@@ -2,46 +2,11 @@
     <div class="mx-4">
         <x-card class="p-10 print:p-0 print:border-0">
             <div class="flex flex-col items-center justify-center text-center">
-                <!-- Image Carousel -->
-                <div x-data="imageCarousel([
-                    '{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}',
-                    @foreach($listing->images as $image)
-                        '{{ asset('storage/' . $image->image_path) }}',
-                    @endforeach
-                ])" 
-                class="relative w-full max-w-3xl mx-auto mb-6">
-                    <div class="overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9">
-                        <template x-for="(image, index) in images" :key="index">
-                            <img :src="image" 
-                                 :class="{'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index}"
-                                 class="absolute w-full h-full object-cover transition-opacity duration-500 cursor-pointer"
-                                 @click="openModal(image)"
-                                 alt="Car image">
-                        </template>
-                    </div>
-                    
-                    <!-- Navigation Buttons -->
-                    <button @click="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-r-lg hover:bg-black/75">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button @click="next()" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-l-lg hover:bg-black/75">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                    
-                    <!-- Indicators -->
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                        <template x-for="(image, index) in images" :key="index">
-                            <button @click="currentIndex = index" 
-                                    :class="{'bg-white': currentIndex === index, 'bg-white/50': currentIndex !== index}"
-                                    class="w-2 h-2 rounded-full transition-colors duration-200">
-                            </button>
-                        </template>
-                    </div>
-                </div>
+                <!-- Main Image -->
+                <img class="w-full max-w-3xl mx-auto mb-6 cursor-pointer object-cover rounded-lg shadow-lg"
+                     src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
+                     alt="Main Car Image"
+                     onclick="openModal(this.src)"/>
 
                 <h3 class="text-2xl mb-2 print:text-3xl">{{ $listing->title }}</h3>
                 <div class="text-lg my-4 print:hidden">
@@ -94,19 +59,49 @@
                     Contact via WhatsApp
                 </button>
 
-                <!-- Gallery section with onclick functionality to open images in a modal -->
+                <!-- Gallery Carousel -->
                 @if($listing->images->count() > 0)
                     <div class="mt-6 print:mt-0">
                         <h3 class="text-2xl font-bold mb-4 print:text-3xl">Gallery</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 print:grid-cols-1 print:gap-0">
+                        <div x-data="imageCarousel([
                             @foreach($listing->images as $image)
-                                <div class="aspect-w-4 aspect-h-3">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}"
-                                         alt="Gallery Image"
-                                         class="w-full h-full object-cover rounded-lg shadow-lg cursor-pointer transition duration-200 ease-in transform hover:scale-105 print:w-full print:h-auto"
-                                         onclick="openModal(this.src)">
-                                </div>
+                                '{{ asset('storage/' . $image->image_path) }}',
                             @endforeach
+                        ])" 
+                        class="relative w-full max-w-3xl mx-auto">
+                            <div class="overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9">
+                                <template x-for="(image, index) in images" :key="index">
+                                    <img :src="image" 
+                                         :class="{'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index}"
+                                         class="absolute w-full h-full object-cover transition-opacity duration-500 cursor-pointer"
+                                         @click="openModal(image)"
+                                         alt="Gallery image">
+                                </template>
+                            </div>
+                            
+                            <!-- Navigation Buttons -->
+                            <button @click="prev()" 
+                                    class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-r-lg hover:bg-black/75">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button @click="next()" 
+                                    class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-l-lg hover:bg-black/75">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                            
+                            <!-- Indicators -->
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                <template x-for="(image, index) in images" :key="index">
+                                    <button @click="currentIndex = index" 
+                                            :class="{'bg-white': currentIndex === index, 'bg-white/50': currentIndex !== index}"
+                                            class="w-2 h-2 rounded-full transition-colors duration-200">
+                                    </button>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 @else

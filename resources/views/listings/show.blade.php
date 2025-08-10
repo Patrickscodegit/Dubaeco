@@ -3,7 +3,7 @@
         <x-card class="p-10 print:p-0 print:border-0">
             <div class="flex flex-col items-center justify-center text-center">
                 <!-- Logo and modal opening functionality -->
-                <img class="w-48 mr-6 mb-6 cursor-pointer print:max-w-full"
+                <img class="w-full max-w-md mx-auto md:w-96 mb-6 cursor-pointer print:max-w-full object-cover rounded-lg shadow-lg"
                      src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
                      alt="Company Logo"
                      onclick="openModal(this.src)"/>
@@ -71,11 +71,12 @@
                         <h3 class="text-2xl font-bold mb-4 print:text-3xl">Gallery</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 print:grid-cols-1 print:gap-0">
                             @foreach($listing->images as $image)
-                                <img src="{{ asset('storage/' . $image->image_path) }}"
-                                     alt="Gallery Image"
-                                     class="rounded-lg shadow-lg cursor-pointer transition duration-200 ease-in transform hover:scale-105 print:w-full print:h-auto print:object-cover"
-                                     onclick="openModal(this.src)"
-                                     style="max-height: 300px;"> <!-- Set max-height for non-printing -->
+                                <div class="aspect-w-4 aspect-h-3">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                         alt="Gallery Image"
+                                         class="w-full h-full object-cover rounded-lg shadow-lg cursor-pointer transition duration-200 ease-in transform hover:scale-105 print:w-full print:h-auto"
+                                         onclick="openModal(this.src)">
+                                </div>
                             @endforeach
                         </div>
                     </div>
